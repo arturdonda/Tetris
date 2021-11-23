@@ -1,4 +1,4 @@
-import { Board } from '../Classes/Board';
+import { Board } from '../classes/Board';
 
 export default (board: Board) => {
 	window.addEventListener('keydown', (event: KeyboardEvent) => {

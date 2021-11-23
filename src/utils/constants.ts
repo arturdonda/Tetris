@@ -1,4 +1,4 @@
-import { TetrominoType } from '../Types/index.js';
+import { TetrominoType } from '../types/index';
 
 export const ROWS = 20;
 export const COLS = 10;

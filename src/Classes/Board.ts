@@ -1,7 +1,7 @@
-import { BoardType } from '../Types/index.js';
-import { COLORS, COLS, ROWS } from '../utils/constants.js';
-import { drawSquare } from '../utils/drawSquare.js';
-import { Tetromino } from './Tetromino.js';
+import { BoardType } from '../types/index';
+import { COLORS, COLS, ROWS } from '../utils/constants';
+import { drawSquare } from '../utils/drawSquare';
+import { Tetromino } from './Tetromino';
 
 export class Board {
 	rows: number;

@@ -1,6 +1,7 @@
-import { Board } from './Classes/Board.js';
-import keydownListener from './utils/keydownListener.js';
+import { Board } from './classes/Board';
+import keydownListener from './utils/keydownListener';
 const scoreElement = document.getElementById('score') as HTMLDivElement;
+import './assets/style.css';
 
 const board = new Board();
 let dropStart = Date.now();

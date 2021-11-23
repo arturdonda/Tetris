@@ -1,4 +1,4 @@
-import { COLORS } from '../utils/constants.js';
+import { COLORS } from '../utils/constants';
 
 export type BoardType = COLORS[][];
 
