@@ -1,5 +1,5 @@
 import { BoardType } from '../types/index';
-import { COLORS, COLS, ROWS } from '../utils/constants';
+import { COLORS, COLS, ROWS, SCORING_SYSTEM } from '../utils/constants';
 import { drawSquare } from '../utils/drawSquare';
 import { Tetromino } from './Tetromino';
 
@@ -33,6 +33,7 @@ export class Board {
 	}
 
 	removeFullRows() {
+		let rowCount = 0;
 		for (let row = 0; row < ROWS; row++) {
 			let isRowFull = true;
 
@@ -50,9 +51,11 @@ export class Board {
 				for (let c = 0; c < COLS; c++) {
 					this.grid[0][c] = COLORS.vacant;
 				}
-				this.score += 10;
+				rowCount++;
 			}
 		}
+
+		this.score += rowCount ? SCORING_SYSTEM[rowCount - 1] : 0;
 
 		this.drawBoard();
 	}

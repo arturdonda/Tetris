@@ -5,6 +5,8 @@ export const COLS = 10;
 
 export const SQUARE_SIZE = 20;
 
+export const SCORING_SYSTEM = [40, 100, 300, 1200];
+
 export enum COLORS {
 	black = '#000000',
 	cyan = '#07F0F3',
