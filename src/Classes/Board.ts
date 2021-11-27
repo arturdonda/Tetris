@@ -75,6 +75,8 @@ export class Board {
 		}
 
 		this.removeFullRows();
+
+		if (!this.gameOver) this.activeTetromino = this.generateTetromino();
 	}
 
 	startBoard() {

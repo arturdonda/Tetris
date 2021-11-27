@@ -74,14 +74,11 @@ export class Tetromino {
 	}
 
 	moveDown(board: Board, y: number = 1) {
-		if (this.willColide(0, y, board)) {
-			board.lockTetromino();
-			if (!board.isGameOver()) board.activeTetromino = board.generateTetromino();
-		} else {
-			this.unDraw();
-			this.y += y;
-			this.draw();
-		}
+		if (this.willColide(0, y, board)) return board.lockTetromino();
+
+		this.unDraw();
+		this.y += y;
+		this.draw();
 	}
 
 	hardDrop(board: Board) {
@@ -92,6 +89,7 @@ export class Tetromino {
 		}
 
 		this.moveDown(board, downSpaces - 1);
+		board.lockTetromino();
 	}
 
 	rotate(board: Board) {
