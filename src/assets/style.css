@@ -13,10 +13,17 @@ canvas#tetris {
 	margin: 0 auto;
 }
 
-div#sideContent {
+div.sideContent {
 	position: absolute;
-	left: calc(50vw + 120px);
 	top: 37px;
+}
+
+div.sideContent.left {
+	left: calc(50vw - 200px);
+}
+
+div.sideContent.right {
+	left: calc(50vw + 120px);
 }
 
 div.sideBlock {

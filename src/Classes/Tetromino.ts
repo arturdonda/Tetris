@@ -18,6 +18,14 @@ export class Tetromino {
 		this.y = -2;
 	}
 
+	reset() {
+		this.unDraw();
+		this.rotationIndex = 0;
+		this.activeShape = this.tetromino.shapes[this.rotationIndex];
+		this.x = 3;
+		this.y = -2;
+	}
+
 	private getNewRotationIndex() {
 		return (this.rotationIndex + 1) % this.tetromino.shapes.length;
 	}

@@ -1,5 +1,6 @@
 import { BoardType } from '../types/index';
 import { COLORS, COLS, ROWS, SCORING_SYSTEM } from '../utils/constants';
+import drawHoldedTetromino from '../utils/drawHoldedTetromino';
 import drawNextTetromino from '../utils/drawNextTetromino';
 import drawSquare from '../utils/drawSquare';
 import { Tetromino } from './Tetromino';
@@ -10,6 +11,7 @@ export class Board {
 	grid: BoardType;
 	activeTetromino: Tetromino;
 	nextTetromino: Tetromino;
+	holdedTetromino: Tetromino;
 	gameOver: boolean;
 	score: number;
 	linesCleared: number;
@@ -84,6 +86,21 @@ export class Board {
 		this.removeFullRows();
 
 		if (!this.gameOver) this.generateTetromino();
+	}
+
+	holdTetromino() {
+		this.activeTetromino.reset();
+
+		if (this.holdedTetromino) {
+			const auxTetromino = this.activeTetromino;
+			this.activeTetromino = this.holdedTetromino;
+			this.holdedTetromino = auxTetromino;
+		} else {
+			this.holdedTetromino = this.activeTetromino;
+			this.generateTetromino();
+		}
+
+		drawHoldedTetromino(this.holdedTetromino.tetromino);
 	}
 
 	startBoard() {

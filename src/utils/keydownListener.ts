@@ -18,6 +18,9 @@ export default (board: Board) => {
 			case ' ':
 				board.activeTetromino.hardDrop(board);
 				break;
+			case 'c':
+				board.holdTetromino();
+				break;
 		}
 	});
 };
