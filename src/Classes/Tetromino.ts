@@ -44,11 +44,11 @@ export class Tetromino {
 		this.fill(COLORS.vacant);
 	}
 
-	willColide(x: number, y: number, board: Board, shape: RotationState = this.activeShape) {
+	private willColide(x: number, y: number, board: Board, shape: RotationState = this.activeShape) {
 		for (let row = 0; row < 4; row++) {
 			for (let col = 0; col < 4; col++) {
-				let newX = this.x + col + x;
-				let newY = this.y + row + y;
+				const newX = this.x + col + x;
+				const newY = this.y + row + y;
 
 				if (!shape[row][col] || newY < 0) continue;
 				if (newX < 0 || newX >= COLS || newY >= ROWS || board.grid[newY][newX] != COLORS.vacant) return true;
@@ -57,16 +57,6 @@ export class Tetromino {
 		return false;
 	}
 
-	moveDown(board: Board) {
-		if (this.willColide(0, 1, board)) {
-			board.lockTetromino();
-			if (!board.isGameOver()) board.activeTetromino = board.generateTetromino();
-		} else {
-			this.unDraw();
-			this.y++;
-			this.draw();
-		}
-	}
 	moveRight(board: Board) {
 		if (this.willColide(1, 0, board)) return;
 
@@ -74,6 +64,7 @@ export class Tetromino {
 		this.x++;
 		this.draw();
 	}
+
 	moveLeft(board: Board) {
 		if (this.willColide(-1, 0, board)) return;
 
@@ -81,8 +72,30 @@ export class Tetromino {
 		this.x--;
 		this.draw();
 	}
+
+	moveDown(board: Board, y: number = 1) {
+		if (this.willColide(0, y, board)) {
+			board.lockTetromino();
+			if (!board.isGameOver()) board.activeTetromino = board.generateTetromino();
+		} else {
+			this.unDraw();
+			this.y += y;
+			this.draw();
+		}
+	}
+
+	hardDrop(board: Board) {
+		let downSpaces = 0;
+
+		while (!this.willColide(0, downSpaces, board)) {
+			downSpaces++;
+		}
+
+		this.moveDown(board, downSpaces - 1);
+	}
+
 	rotate(board: Board) {
-		let nextShape = this.tetromino.shapes[this.getNewRotationIndex()];
+		const nextShape = this.tetromino.shapes[this.getNewRotationIndex()];
 		let kick = 0;
 
 		if (this.willColide(0, 0, board, nextShape)) kick = this.x > COLS / 2 ? -1 : 1;

@@ -24,7 +24,7 @@ export class Board {
 		return new Tetromino();
 	}
 
-	drawBoard() {
+	private drawBoard() {
 		for (let row = 0; row < ROWS; row++) {
 			for (let col = 0; col < COLS; col++) {
 				drawSquare(col, row, this.grid[row][col]);
@@ -32,7 +32,7 @@ export class Board {
 		}
 	}
 
-	removeFullRows() {
+	private removeFullRows() {
 		let rowCount = 0;
 		for (let row = 0; row < ROWS; row++) {
 			let isRowFull = true;

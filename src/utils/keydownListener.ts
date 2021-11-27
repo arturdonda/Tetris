@@ -15,6 +15,9 @@ export default (board: Board) => {
 			case 'ArrowDown':
 				board.activeTetromino.moveDown(board);
 				break;
+			case ' ':
+				board.activeTetromino.hardDrop(board);
+				break;
 		}
 	});
 };
