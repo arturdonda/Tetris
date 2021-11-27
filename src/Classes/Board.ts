@@ -1,6 +1,7 @@
 import { BoardType } from '../types/index';
 import { COLORS, COLS, ROWS, SCORING_SYSTEM } from '../utils/constants';
-import { drawSquare } from '../utils/drawSquare';
+import drawNextTetromino from '../utils/drawNextTetromino';
+import drawSquare from '../utils/drawSquare';
 import { Tetromino } from './Tetromino';
 
 export class Board {
@@ -8,20 +9,26 @@ export class Board {
 	columns: number;
 	grid: BoardType;
 	activeTetromino: Tetromino;
+	nextTetromino: Tetromino;
 	gameOver: boolean;
 	score: number;
+	linesCleared: number;
 
 	constructor(rows: number = ROWS, columns: number = COLS) {
 		this.rows = rows;
 		this.columns = columns;
 		this.grid = new Array(this.rows);
-		this.activeTetromino = this.generateTetromino();
+		this.activeTetromino = new Tetromino();
+		this.nextTetromino = new Tetromino();
 		this.gameOver = false;
 		this.score = 0;
+		this.linesCleared = 0;
 	}
 
 	generateTetromino() {
-		return new Tetromino();
+		this.activeTetromino = this.nextTetromino;
+		this.nextTetromino = new Tetromino();
+		drawNextTetromino(this.nextTetromino.tetromino);
 	}
 
 	private drawBoard() {
@@ -56,7 +63,7 @@ export class Board {
 		}
 
 		this.score += rowCount ? SCORING_SYSTEM[rowCount - 1] : 0;
-
+		this.linesCleared += rowCount;
 		this.drawBoard();
 	}
 
@@ -76,7 +83,7 @@ export class Board {
 
 		this.removeFullRows();
 
-		if (!this.gameOver) this.activeTetromino = this.generateTetromino();
+		if (!this.gameOver) this.generateTetromino();
 	}
 
 	startBoard() {
@@ -89,13 +96,6 @@ export class Board {
 		}
 
 		this.drawBoard();
-	}
-
-	isGameOver() {
-		return this.gameOver;
-	}
-
-	getScore() {
-		return this.score;
+		drawNextTetromino(this.nextTetromino.tetromino);
 	}
 }

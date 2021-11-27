@@ -1,6 +1,6 @@
 import { RotationState, TetrominoType } from '../types/index';
 import { COLORS, COLS, ROWS, tetrominoes } from '../utils/constants';
-import { drawSquare } from '../utils/drawSquare';
+import drawSquare from '../utils/drawSquare';
 import { Board } from './Board';
 
 export class Tetromino {

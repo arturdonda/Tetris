@@ -1,6 +1,7 @@
 import { Board } from './classes/Board';
 import keydownListener from './utils/keydownListener';
 const scoreElement = document.getElementById('score') as HTMLDivElement;
+const linesElement = document.getElementById('lines') as HTMLDivElement;
 import './assets/style.css';
 
 const board = new Board();
@@ -12,10 +13,11 @@ const drop = () => {
 		dropStart = Date.now();
 	}
 
-	if (board.isGameOver()) {
+	if (board.gameOver === true) {
 		alert('Game Over!');
 	} else {
 		scoreElement.innerHTML = board.score.toString();
+		linesElement.innerHTML = board.linesCleared.toString();
 		requestAnimationFrame(drop);
 	}
 };

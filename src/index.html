@@ -4,16 +4,24 @@
 		<link rel="icon" type="image/x-icon" href="/favicon.ico" />
 	</head>
 	<body>
-		<div>Tetris Game</div>
-		<br />
+		<div id="title">Tetris Game</div>
 		<canvas id="tetris" width="200" height="400"></canvas>
-		<div>
-			Score :
-			<div id="score">0</div>
+		<div id="sideContent">
+			<div class="sideBlock">
+				<div class="label">Next</div>
+				<div class="content">
+					<canvas id="nextTetromino" width="80" height="80"></canvas>
+				</div>
+			</div>
+			<div class="sideBlock">
+				<div class="label">Score</div>
+				<div id="score" class="content">0</div>
+			</div>
+			<div class="sideBlock">
+				<div class="label">Lines</div>
+				<div id="lines" class="content">0</div>
+			</div>
 		</div>
-		<script>
-			var exports = {};
-		</script>
-		<script type="module" src="./index.js"></script>
+		<script src="./index.js"></script>
 	</body>
 </html>
