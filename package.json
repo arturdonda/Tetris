@@ -1,6 +1,6 @@
 {
 	"name": "tetris",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"author": "Artur Donda",
 	"license": "MIT",
 	"main": "index.js",

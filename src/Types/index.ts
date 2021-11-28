@@ -10,3 +10,9 @@ export type TetrominoType = {
 type RotationStates = [RotationState, RotationState, RotationState, RotationState];
 
 export type RotationState = [[0 | 1, 0 | 1, 0 | 1, 0 | 1], [0 | 1, 0 | 1, 0 | 1, 0 | 1], [0 | 1, 0 | 1, 0 | 1, 0 | 1], [0 | 1, 0 | 1, 0 | 1, 0 | 1]];
+
+export type LevelType = {
+	number: number;
+	refreshRate: number;
+	requiredLines: number;
+};

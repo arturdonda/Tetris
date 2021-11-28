@@ -1,5 +1,5 @@
-import { BoardType } from '../types/index';
-import { COLORS, COLS, ROWS, SCORING_SYSTEM } from '../utils/constants';
+import { BoardType, LevelType } from '../types/index';
+import { COLORS, COLS, LEVEL_SYSTEM, ROWS, SCORING_SYSTEM } from '../utils/constants';
 import drawHoldedTetromino from '../utils/drawHoldedTetromino';
 import drawNextTetromino from '../utils/drawNextTetromino';
 import drawSquare from '../utils/drawSquare';
@@ -15,6 +15,7 @@ export class Board {
 	gameOver: boolean;
 	score: number;
 	linesCleared: number;
+	level: LevelType;
 
 	constructor(rows: number = ROWS, columns: number = COLS) {
 		this.rows = rows;
@@ -25,6 +26,7 @@ export class Board {
 		this.gameOver = false;
 		this.score = 0;
 		this.linesCleared = 0;
+		this.level = LEVEL_SYSTEM[0];
 	}
 
 	generateTetromino() {
@@ -64,8 +66,12 @@ export class Board {
 			}
 		}
 
-		this.score += rowCount ? SCORING_SYSTEM[rowCount - 1] : 0;
+		this.score += rowCount ? SCORING_SYSTEM[rowCount - 1] * (this.level.number + 1) : 0;
 		this.linesCleared += rowCount;
+
+		if (this.linesCleared >= this.level.requiredLines && this.level.number < LEVEL_SYSTEM[LEVEL_SYSTEM.length - 1].number)
+			this.level = LEVEL_SYSTEM[this.level.number + 1];
+
 		this.drawBoard();
 	}
 
