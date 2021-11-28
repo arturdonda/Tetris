@@ -1,11 +1,14 @@
 import { TetrominoType } from '../types';
 import { COLORS, SQUARE_SIZE } from './constants';
 
-const canvasElement = document.getElementById('nextTetromino') as HTMLCanvasElement;
-const context = canvasElement.getContext('2d') as CanvasRenderingContext2D;
+const holdedCanvasElement = document.getElementById('holdedTetromino') as HTMLCanvasElement;
+const holdedContext = holdedCanvasElement.getContext('2d') as CanvasRenderingContext2D;
 
-export default (tetromino: TetrominoType) => {
-	clear();
+const nextCanvasElement = document.getElementById('nextTetromino') as HTMLCanvasElement;
+const nextContext = nextCanvasElement.getContext('2d') as CanvasRenderingContext2D;
+
+const drawTetromino = (tetromino: TetrominoType, context: CanvasRenderingContext2D) => {
+	clear(context);
 
 	for (let row = 0; row < 4; row++) {
 		for (let col = 0; col < 4; col++) {
@@ -20,7 +23,7 @@ export default (tetromino: TetrominoType) => {
 	}
 };
 
-const clear = () => {
+const clear = (context: CanvasRenderingContext2D) => {
 	for (let row = 0; row < 4; row++) {
 		for (let col = 0; col < 4; col++) {
 			context.fillStyle = COLORS.vacant;
@@ -30,4 +33,9 @@ const clear = () => {
 			context.strokeRect(row * SQUARE_SIZE, col * SQUARE_SIZE, SQUARE_SIZE, SQUARE_SIZE);
 		}
 	}
+};
+
+export default {
+	next: (tetromino: TetrominoType) => drawTetromino(tetromino, nextContext),
+	holded: (tetromino: TetrominoType) => drawTetromino(tetromino, holdedContext),
 };

@@ -1,7 +1,6 @@
 import { BoardType, LevelType } from '../types/index';
 import { COLORS, COLS, LEVEL_SYSTEM, ROWS, SCORING_SYSTEM } from '../utils/constants';
-import drawHoldedTetromino from '../utils/drawHoldedTetromino';
-import drawNextTetromino from '../utils/drawNextTetromino';
+import drawTetromino from '../utils/drawTetromino';
 import drawSquare from '../utils/drawSquare';
 import { Tetromino } from './Tetromino';
 
@@ -32,7 +31,7 @@ export class Board {
 	generateTetromino() {
 		this.activeTetromino = this.nextTetromino;
 		this.nextTetromino = new Tetromino();
-		drawNextTetromino(this.nextTetromino.tetromino);
+		drawTetromino.next(this.nextTetromino.tetromino);
 	}
 
 	private drawBoard() {
@@ -106,7 +105,7 @@ export class Board {
 			this.generateTetromino();
 		}
 
-		drawHoldedTetromino(this.holdedTetromino.tetromino);
+		drawTetromino.holded(this.holdedTetromino.tetromino);
 	}
 
 	startBoard() {
@@ -119,6 +118,6 @@ export class Board {
 		}
 
 		this.drawBoard();
-		drawNextTetromino(this.nextTetromino.tetromino);
+		drawTetromino.next(this.nextTetromino.tetromino);
 	}
 }
