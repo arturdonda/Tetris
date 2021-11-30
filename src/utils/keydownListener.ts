@@ -4,19 +4,19 @@ export default (board: Board) => {
 	window.addEventListener('keydown', (event: KeyboardEvent) => {
 		switch (event.key) {
 			case 'ArrowLeft':
-				board.activeTetromino.moveLeft(board);
+				board.activeTetromino.moveLeft();
 				break;
 			case 'ArrowUp':
-				board.activeTetromino.rotate(board);
+				board.activeTetromino.rotate();
 				break;
 			case 'ArrowRight':
-				board.activeTetromino.moveRight(board);
+				board.activeTetromino.moveRight();
 				break;
 			case 'ArrowDown':
-				board.activeTetromino.moveDown(board);
+				board.activeTetromino.moveDown();
 				break;
 			case ' ':
-				board.activeTetromino.hardDrop(board);
+				board.activeTetromino.hardDrop();
 				break;
 			case 'c':
 			case 'C':

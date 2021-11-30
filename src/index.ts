@@ -11,7 +11,7 @@ let dropStart = Date.now();
 
 const drop = () => {
 	if (Date.now() - dropStart > board.level.refreshRate) {
-		board.activeTetromino.moveDown(board);
+		board.activeTetromino.moveDown();
 		dropStart = Date.now();
 	}
 

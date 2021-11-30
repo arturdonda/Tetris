@@ -20,8 +20,8 @@ export class Board {
 		this.rows = rows;
 		this.columns = columns;
 		this.grid = new Array(this.rows);
-		this.activeTetromino = new Tetromino();
-		this.nextTetromino = new Tetromino();
+		this.activeTetromino = new Tetromino(this);
+		this.nextTetromino = new Tetromino(this);
 		this.gameOver = false;
 		this.score = 0;
 		this.linesCleared = 0;
@@ -30,7 +30,7 @@ export class Board {
 
 	generateTetromino() {
 		this.activeTetromino = this.nextTetromino;
-		this.nextTetromino = new Tetromino();
+		this.nextTetromino = new Tetromino(this);
 		drawTetromino.next(this.nextTetromino.tetromino);
 	}
 
