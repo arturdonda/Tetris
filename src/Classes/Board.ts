@@ -3,35 +3,69 @@ import { COLORS, COLS, LEVEL_SYSTEM, ROWS, SCORING_SYSTEM } from '../utils/const
 import drawTetromino from '../utils/drawTetromino';
 import drawSquare from '../utils/drawSquare';
 import { Tetromino } from './Tetromino';
+import keydownListener from '../utils/keydownListener';
 
 export class Board {
+	startButton: HTMLButtonElement;
+	gameLoopCallback: () => unknown;
 	rows: number;
 	columns: number;
 	grid: BoardType;
 	activeTetromino: Tetromino;
 	nextTetromino: Tetromino;
 	holdedTetromino: Tetromino;
-	gameOver: boolean;
+	gameStatus: 'playing' | 'paused' | 'gameOver';
 	score: number;
 	linesCleared: number;
 	level: LevelType;
+	dropStart: number;
 
-	constructor(rows: number = ROWS, columns: number = COLS) {
+	constructor(startButton: HTMLButtonElement, gameLoopCallback?: () => unknown, rows: number = ROWS, columns: number = COLS) {
+		this.startButton = startButton;
+		this.gameLoopCallback = gameLoopCallback;
 		this.rows = rows;
 		this.columns = columns;
 		this.grid = new Array(this.rows);
+
+		this.resetBoard();
+
+		this.startButton.onclick = () => {
+			this.handleButtonClick();
+			this.startButton.blur();
+		};
+
+		keydownListener(this);
+	}
+
+	private resetBoard() {
 		this.activeTetromino = new Tetromino(this);
 		this.nextTetromino = new Tetromino(this);
-		this.gameOver = false;
+		this.gameStatus = 'gameOver';
 		this.score = 0;
 		this.linesCleared = 0;
 		this.level = LEVEL_SYSTEM[0];
+		this.dropStart = Date.now();
+
+		this.clearBoard();
+		drawTetromino.clear('next');
+		drawTetromino.clear('hold');
+		this.drawBoard();
 	}
 
 	generateTetromino() {
 		this.activeTetromino = this.nextTetromino;
 		this.nextTetromino = new Tetromino(this);
 		drawTetromino.next(this.nextTetromino.tetromino);
+	}
+
+	private clearBoard() {
+		for (let row = 0; row < this.rows; row++) {
+			this.grid[row] = [];
+
+			for (let col = 0; col < this.columns; col++) {
+				this.grid[row][col] = COLORS.vacant;
+			}
+		}
 	}
 
 	private drawBoard() {
@@ -44,6 +78,7 @@ export class Board {
 
 	private removeFullRows() {
 		let rowCount = 0;
+
 		for (let row = 0; row < ROWS; row++) {
 			let isRowFull = true;
 
@@ -80,7 +115,7 @@ export class Board {
 				if (!this.activeTetromino.activeShape[row][col]) continue;
 
 				if (this.activeTetromino.y + row < 0) {
-					this.gameOver = true;
+					this.gameOver();
 					break;
 				}
 
@@ -90,7 +125,7 @@ export class Board {
 
 		this.removeFullRows();
 
-		if (!this.gameOver) this.generateTetromino();
+		if (this.gameStatus === 'playing') this.generateTetromino();
 	}
 
 	holdTetromino() {
@@ -108,16 +143,54 @@ export class Board {
 		drawTetromino.holded(this.holdedTetromino.tetromino);
 	}
 
-	startBoard() {
-		for (let row = 0; row < this.rows; row++) {
-			this.grid[row] = [];
-
-			for (let col = 0; col < this.columns; col++) {
-				this.grid[row][col] = COLORS.vacant;
-			}
+	private gameLoop() {
+		if (Date.now() - this.dropStart > this.level.refreshRate && this.gameStatus === 'playing') {
+			this.activeTetromino.moveDown();
+			this.dropStart = Date.now();
 		}
 
-		this.drawBoard();
+		if (this.gameStatus !== 'gameOver') {
+			this.gameLoopCallback();
+			requestAnimationFrame(this.gameLoop.bind(this));
+		}
+	}
+
+	private handleButtonClick() {
+		switch (this.gameStatus) {
+			case 'gameOver':
+				this.startGame();
+				break;
+			case 'paused':
+				this.resumeGame();
+				break;
+			case 'playing':
+				this.pauseGame();
+				break;
+		}
+	}
+
+	startGame() {
+		this.resetBoard();
+
 		drawTetromino.next(this.nextTetromino.tetromino);
+		this.startButton.innerText = 'Pause (Enter)';
+		this.gameStatus = 'playing';
+		this.gameLoop();
+	}
+
+	pauseGame() {
+		this.startButton.innerText = 'Resume (Enter)';
+		this.gameStatus = 'paused';
+	}
+
+	resumeGame() {
+		this.startButton.innerText = 'Pause (Enter)';
+		this.gameStatus = 'playing';
+	}
+
+	private gameOver() {
+		this.startButton.innerText = 'Start (Enter)';
+		this.gameStatus = 'gameOver';
+		alert('Game Over!');
 	}
 }

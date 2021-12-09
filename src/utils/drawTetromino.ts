@@ -38,4 +38,5 @@ const clear = (context: CanvasRenderingContext2D) => {
 export default {
 	next: (tetromino: TetrominoType) => drawTetromino(tetromino, nextContext),
 	holded: (tetromino: TetrominoType) => drawTetromino(tetromino, holdedContext),
+	clear: (context: 'next' | 'hold') => clear(context === 'next' ? nextContext : holdedContext),
 };

@@ -44,3 +44,15 @@ div.sideBlock > div.label::after {
 div.sideBlock > div.content {
 	font-size: 1.1rem;
 }
+
+div#buttons {
+	display: flex;
+	justify-content: center;
+	margin-top: 25px;
+}
+
+button#startBtn {
+	padding: 0.7rem 3rem;
+	font-family: monospace;
+	font-size: 1.25rem;
+}
