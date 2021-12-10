@@ -7,7 +7,10 @@ import keydownListener from '../utils/keydownListener';
 
 export class Board {
 	startButton: HTMLButtonElement;
-	gameLoopCallback: () => unknown;
+	scoreElement: HTMLElement;
+	highscoreElement: HTMLElement;
+	linesElement: HTMLElement;
+	levelElement: HTMLElement;
 	rows: number;
 	columns: number;
 	grid: BoardType;
@@ -16,13 +19,25 @@ export class Board {
 	holdedTetromino: Tetromino;
 	gameStatus: 'playing' | 'paused' | 'gameOver';
 	score: number;
+	highscore: number;
 	linesCleared: number;
 	level: LevelType;
 	dropStart: number;
 
-	constructor(startButton: HTMLButtonElement, gameLoopCallback?: () => unknown, rows: number = ROWS, columns: number = COLS) {
+	constructor(
+		startButton: HTMLButtonElement,
+		scoreElement: HTMLElement,
+		highscoreElement: HTMLElement,
+		linesElement: HTMLElement,
+		levelElement: HTMLElement,
+		rows: number = ROWS,
+		columns: number = COLS
+	) {
 		this.startButton = startButton;
-		this.gameLoopCallback = gameLoopCallback;
+		this.scoreElement = scoreElement;
+		this.highscoreElement = highscoreElement;
+		this.linesElement = linesElement;
+		this.levelElement = levelElement;
 		this.rows = rows;
 		this.columns = columns;
 		this.grid = new Array(this.rows);
@@ -42,10 +57,11 @@ export class Board {
 		this.nextTetromino = new Tetromino(this);
 		this.gameStatus = 'gameOver';
 		this.score = 0;
+		this.highscore = parseInt(localStorage.getItem('highscore')) || 0;
+		this.highscoreElement.innerHTML = this.highscore.toString();
 		this.linesCleared = 0;
 		this.level = LEVEL_SYSTEM[0];
 		this.dropStart = Date.now();
-
 		this.clearBoard();
 		drawTetromino.clear('next');
 		drawTetromino.clear('hold');
@@ -150,7 +166,10 @@ export class Board {
 		}
 
 		if (this.gameStatus !== 'gameOver') {
-			this.gameLoopCallback();
+			this.scoreElement.innerHTML = this.score.toString();
+			this.linesElement.innerHTML = this.linesCleared.toString();
+			this.levelElement.innerHTML = this.level.number.toString();
+			this.updateHighscore();
 			requestAnimationFrame(this.gameLoop.bind(this));
 		}
 	}
@@ -192,5 +211,13 @@ export class Board {
 		this.startButton.innerText = 'Start (Enter)';
 		this.gameStatus = 'gameOver';
 		alert('Game Over!');
+	}
+
+	private updateHighscore() {
+		if (this.score <= this.highscore) return;
+
+		this.highscore = this.score;
+		this.highscoreElement.innerHTML = this.score.toString();
+		localStorage.setItem('highscore', this.score.toString());
 	}
 }
